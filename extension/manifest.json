@@ -1,0 +1,12 @@
+{
+  "name": "OG Reddit",
+  "version": "1.0",
+  "description": "Publishes your reddit activity to your Facebook Timeline",
+  "content-scripts": [
+    {
+      "matches": [ "http://*.reddit.com/*", "https://*.reddit.com/*" ],
+      "css": [ "background.css" ],
+      "js": [ "jquery.min.js", "background.js" ]
+    }
+  ]
+}
