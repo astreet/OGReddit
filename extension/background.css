@@ -1,0 +1,29 @@
+.fbPopup {
+  bottom: 24px;
+  width: 230px;
+  right: 20px;
+  height: 75px;
+  border: solid 1px #333;
+  background: #fff;
+  border: solid 1px #333;
+  position: fixed;
+  padding: 8px 0 0 15px;
+}
+
+.fb-add-to-timeline {
+  margin: auto;
+  padding-top: 32px;
+}
+
+.fbPopupNib {
+  bottom: 0px;
+  right: 20px;
+  height: 25px;
+  width: 28px;
+  border: solid 1px #333;
+  border-bottom: 0;
+  background: #eef;
+  position: fixed;
+  cursor: pointer;
+}
+

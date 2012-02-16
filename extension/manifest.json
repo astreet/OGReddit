@@ -2,11 +2,11 @@
   "name": "OG Reddit",
   "version": "1.0",
   "description": "Publishes your reddit activity to your Facebook Timeline",
-  "content-scripts": [
+  "content_scripts": [
     {
       "matches": [ "http://*.reddit.com/*", "https://*.reddit.com/*" ],
       "css": [ "background.css" ],
-      "js": [ "jquery.min.js", "background.js" ]
+      "js": [ "fb-all.js", "jquery.min.js", "background.js" ]
     }
   ]
 }
