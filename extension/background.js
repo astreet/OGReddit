@@ -7,6 +7,7 @@ $(function() {
   }
 
   function disconnect() {
+    accessToken = null;
     connected = false;
   }
 
@@ -21,13 +22,17 @@ $(function() {
     }
   }
 
+  function is_image(uri) {
+    return uri.match('(gif|png|jpg|bmp)$'); 
+  }
+
   var MAX_RETRIES = 3;
   function retryActionWithParams(action, params, retry_count) {
     if (retry_count === MAX_RETRIES) {
       return;
     }
 
-    var url = 'http://ogreddit.herokuapp.com/?' + $.param(params, true) + '&type=fbreddit:post';
+    var url = 'http://ogreddit.herokuapp.com/?' + $.param(params, true);
     console.log('Try ' + (retry_count + 1) + ': ' + url);
     $.post(
       'https://graph.facebook.com/me/fbreddit:' + action,
@@ -54,36 +59,43 @@ $(function() {
     }
 
     var entry = button.parents('.thing');
-    var titleElem =
-      entry
-        .children('.entry').first()
-        .children('p.title').first()
-        .children('a.title').first();
+    var titleElem = entry.find('a.title').first();
+
+    var link = entry.find('a.comments').first().attr('href');
 
     var title = titleElem.text();
-    var link = titleElem.attr('href');
-    if (link && link[0] === '/') {
-      link = 'http://reddit.com' + link;
+
+    var content_url = titleElem.attr('href');
+    if (content_url && content_url[0] === '/') {
+      content_url = 'http://reddit.com' + link;
     }
-    var author =
-      entry
-        .children('.entry').first()
-        .children('.tagline').first()
-        .children('.author').first()
-        .text();
+
+    var author = entry.find('a.author').first().text();
 
     var image = 'http://www.redditstatic.com/over18.png';
     var thumb = entry.children('.thumbnail');
     if (thumb.length > 0) {
       image = thumb.children('img').attr('src');
+    } else if (is_image(content_url)) {
+      image = content_url;
+    }
+
+    var subreddit = entry.find('a.subreddit').first().text()
+    if (!subreddit) {
+      match = window.location.href.match("/r/([^/]+)");
+      if (match && match[1]) {
+        subreddit = match[1];
+      }
     }
 
     doActionWithParams('upvote', {
       title: title,
       link: link,
+      content_url: content_url,
       image: image,
       author: author,
-      //type: 'fbreddit:post'
+      subreddit: subreddit,
+      type: 'fbreddit:post'
     });
   }
 
