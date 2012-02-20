@@ -22,17 +22,13 @@ $(function() {
     }
   }
 
-  function is_image(uri) {
-    return uri.match('(gif|png|jpg|bmp)$'); 
-  }
-
-  var MAX_RETRIES = 3;
-  function retryActionWithParams(action, params, retry_count) {
+  var MAX_RETRIES = 5;
+  function postActionWithRetry(action, object, retry_count) {
     if (retry_count === MAX_RETRIES) {
       return;
     }
 
-    var url = 'http://ogreddit.herokuapp.com/?' + $.param(params, true);
+    var url = object.getObjectURL();
     console.log('Try ' + (retry_count + 1) + ': ' + url);
     $.post(
       'https://graph.facebook.com/me/fbreddit:' + action,
@@ -45,12 +41,12 @@ $(function() {
       console.error('Fail: ' + text);
       setTimeout(function() {
         retryActionWithParams(action, params, retry_count + 1);
-      }, 1000);
+      }, 1000 * Math.pow(2, retry_count));
     });
   }
 
-  function doActionWithParams(action, params) {
-    retryActionWithParams(action, params, 0);
+  function postAction(action, object) {
+    retryActionWithParams(action, object, 0);
   }
 
   function upvote(button) {
@@ -58,45 +54,7 @@ $(function() {
       return;
     }
 
-    var entry = button.parents('.thing');
-    var titleElem = entry.find('a.title').first();
-
-    var link = entry.find('a.comments').first().attr('href');
-
-    var title = titleElem.text();
-
-    var content_url = titleElem.attr('href');
-    if (content_url && content_url[0] === '/') {
-      content_url = 'http://reddit.com' + link;
-    }
-
-    var author = entry.find('a.author').first().text();
-
-    var image = 'http://www.redditstatic.com/over18.png';
-    var thumb = entry.children('.thumbnail');
-    if (thumb.length > 0) {
-      image = thumb.children('img').attr('src');
-    } else if (is_image(content_url)) {
-      image = content_url;
-    }
-
-    var subreddit = entry.find('a.subreddit').first().text()
-    if (!subreddit) {
-      match = window.location.href.match("/r/([^/]+)");
-      if (match && match[1]) {
-        subreddit = match[1];
-      }
-    }
-
-    doActionWithParams('upvote', {
-      title: title,
-      link: link,
-      content_url: content_url,
-      image: image,
-      author: author,
-      subreddit: subreddit,
-      type: 'fbreddit:post'
-    });
+    doActionWithParams('upvote', RedditPost.fromUpvoteButton(button));
   }
 
   function unupvote(button) {
@@ -107,7 +65,10 @@ $(function() {
     '<div id="fb-root" />' +
     '<img class="fbPopupNib" />' +
     '<div class="fbPopup">' +
-      '<div class="fb-add-to-timeline" data-show-faces="true" data-mode="button"></div>' +
+      '<div ' +
+        'class="fb-add-to-timeline" ' +
+        'data-show-faces="true" ' +
+        'data-mode="button" />' +
     '</div>'
   );
 
