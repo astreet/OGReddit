@@ -6,32 +6,34 @@ function OGObject(type) {
 	this.type = type;
 }
 
-OGObject.prototype = {
-  _baseUrl = 'http://ogreddit.herokuapp.com/';
+copy_into(OGObject.prototype, {
+  _baseUrl: 'http://ogreddit.herokuapp.com/',
   toParamArray: function() {
     return {type: this.type};
   },
   _verifyParams: function(params) {
     for (var i in params) {
       if (params.hasOwnProperty(i) &&
-          params[i] === undefined || params[i] === null) {
+          (params[i] === undefined || params[i] === null)) {
           console.error(
-            params[i] + ' is not defined for object of type' + this.type
+            i + ' is not defined for object of type ' + this.type
           );
           return false;
       }
     }
 
     return true;
-  }
+  },
   getObjectURL: function() {
     var params = this.toParamArray();
     if (!this._verifyParams(params)) {
+      console.log('null url');
       return null;
     }
-    return this._baseUrl + '?' + $.params(params, true);
+    console.log(this.type + ': ' + this._baseUrl + '?' + $.param(params, true));
+    return this._baseUrl + '?' + $.param(params, true);
   }
-}
+});
 
 //
 // Post
@@ -41,50 +43,47 @@ var RedditPost = extend(function() {
   super_class(RedditPost).constructor.call(this, 'fbreddit:post');
 }, OGObject);
 
-RedditPost.fromUpvoteButton = function(button) {
-  var post = new RedditPost();
+copy_into(RedditPost, {
+  fromUpvoteButton: function(button) {
+    var post = new RedditPost();
 
-  var entry = button.parents('.thing');
-  var titleElem = entry.find('a.title').first();
+    var entry = button.parents('.thing');
+    var titleElem = entry.find('a.title').first();
 
-  post.link = entry.find('a.comments').first().attr('href');
+    post.link = entry.find('a.comments').first().attr('href');
 
-  post.title = titleElem.text();
+    post.title = titleElem.text();
 
-  var content_url = titleElem.attr('href');
-  if (content_url && content_url[0] === '/') {
-    content_url = 'http://reddit.com' + link;
+    var content_url = titleElem.attr('href');
+    if (content_url && content_url[0] === '/') {
+      content_url = 'http://reddit.com' + link;
+    }
+    post.content_url = content_url;
+
+    post.author = RedditUser.fromAuthorLink(
+      entry.find('a.author').first()
+    ).getObjectURL();
+
+    var image = 'http://www.redditstatic.com/over18.png';
+    var thumb = entry.children('.thumbnail');
+    if (thumb.length > 0) {
+      image = thumb.children('img').attr('src');
+    } else if (is_image(content_url)) {
+      image = content_url;
+    }
+    post.image = image;
+
+    var subreddit_link = entry.find('a.subreddit').first();
+    if (subreddit_link.length) {
+      post.subreddit = 
+        RedditSubreddit.fromSubredditLink(subreddit_link).getObjectURL();
+    } else {
+      post.subreddit = RedditSubreddit.fromCurrentURL().getObjectURL();
+    }
+
+    return post;
   }
-  post.content_url = content_url;
-
-  post.author = RedditAuthor.fromAuthorLink(
-    entry.find('a.author').first()
-  ).getObjectURL();
-
-  var image = 'http://www.redditstatic.com/over18.png';
-  var thumb = entry.children('.thumbnail');
-  if (thumb.length > 0) {
-    image = thumb.children('img').attr('src');
-  } else if (is_image(content_url)) {
-    image = content_url;
-  }
-  post.image = image;
-
-  var subreddit_link = entry.find('a.subreddit').first();
-  if (subreddit_link) {
-    post.subreddit = 
-      RedditSubreddit.fromSubredditLink(subreddit_link).getObjectURL();
-  } else {
-    post.subreddit = RedditSubreddit.fromCurrentURL().getObjectURL();
-  }
-  
-  if (!subreddit) {
-    
-  }
-  post.subreddit = subreddit;
-
-  return post;
-}
+});
 
 copy_into(RedditPost.prototype, {
   toParamArray: function () {
@@ -104,12 +103,12 @@ copy_into(RedditPost.prototype, {
 // Author
 //
 
-var RedditAuthor = extend(function() {
-  super_class(RedditAuthor).constructor.call(this, 'fbreddit:author');
-});
+var RedditUser = extend(function() {
+  super_class(RedditUser).constructor.call(this, 'fbreddit:user');
+}, OGObject);
 
-RedditAuthor.fromAuthorLink = function(button) {
-  var author = new RedditAuthor();
+RedditUser.fromAuthorLink = function(button) {
+  var author = new RedditUser();
   author.title = button.text();
   author.link = button.attr('href');
   author.image = 'http://redditstatic.s3.amazonaws.com/sobrave.png';
@@ -117,9 +116,9 @@ RedditAuthor.fromAuthorLink = function(button) {
   return author;
 }
 
-copy_into(RedditAuthor.prototype, {
+copy_into(RedditUser.prototype, {
   toParamArray: function() {
-    var params = super_class(RedditAuthor).toParamArray.call(this);
+    var params = super_class(RedditUser).toParamArray.call(this);
     return copy_into(params, {
       image: this.image,
       link: this.link,
@@ -137,8 +136,8 @@ copy_into(RedditAuthor.prototype, {
 //
 
 var RedditSubreddit = extend(function() {
-  super_class(Subreddit).constructor.call(this, 'fbreddit:subreddit');
-});
+  super_class(RedditSubreddit).constructor.call(this, 'fbreddit:subreddit');
+}, OGObject);
 
 copy_into(RedditSubreddit, {
   _imageFromLink: function(link) {
@@ -149,7 +148,7 @@ copy_into(RedditSubreddit, {
       async: false,
       success: function(result) {
         image = $(result).find('#header-img').attr('src');
-      }
+      }.bind(image)
     });
     return image;
   },
@@ -157,7 +156,7 @@ copy_into(RedditSubreddit, {
     var subreddit = new RedditSubreddit();
     subreddit.title = '/r/' + button.text();
     subreddit.link = button.attr('href');
-    subreddit.image = RedditSubreddit._imageFromLink(this.link);
+    subreddit.image = 'http://e.thumbs.redditmedia.com/Z8kgqRVNcFP6wiAF.png';
 
     return subreddit;
   },
@@ -170,15 +169,15 @@ copy_into(RedditSubreddit, {
 
     subreddit.title = '/r/' + match[1];
     subreddit.link = 'http://www.reddit.com/r/' + subreddit.title;
-    subreddit.image = RedditSubreddit._imageFromLink(subreddit.link);
+    subreddit.image = 'http://e.thumbs.redditmedia.com/Z8kgqRVNcFP6wiAF.png';
 
     return subreddit;
   }
 });
 
-copy_into(Subreddit.prototype, {
+copy_into(RedditSubreddit.prototype, {
   toParamArray: function() {
-    var params = super_class(Subreddit).toParamArray.call(this);
+    var params = super_class(RedditSubreddit).toParamArray.call(this);
     return copy_into(params, {
       image: this.image,
       link: this.link,

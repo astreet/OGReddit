@@ -40,13 +40,13 @@ $(function() {
 
       console.error('Fail: ' + text);
       setTimeout(function() {
-        retryActionWithParams(action, params, retry_count + 1);
+        postActionWithRetry(action, object, retry_count + 1);
       }, 1000 * Math.pow(2, retry_count));
     });
   }
 
   function postAction(action, object) {
-    retryActionWithParams(action, object, 0);
+    postActionWithRetry(action, object, 0);
   }
 
   function upvote(button) {
@@ -54,7 +54,7 @@ $(function() {
       return;
     }
 
-    doActionWithParams('upvote', RedditPost.fromUpvoteButton(button));
+    postAction('upvote', RedditPost.fromUpvoteButton(button));
   }
 
   function unupvote(button) {
