@@ -27,7 +27,6 @@ copy_into(OGObject.prototype, {
   getObjectURL: function() {
     var params = this.toParamArray();
     if (!this._verifyParams(params)) {
-      console.log('null url');
       return null;
     }
     console.log(this.type + ': ' + this._baseUrl + '?' + $.param(params, true));

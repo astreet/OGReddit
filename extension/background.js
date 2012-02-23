@@ -4,11 +4,17 @@ $(function() {
 
   function connect() {
     connected = true;
+    $('#ogreddit')
+      .children('.disconnected')
+      .switchClass('disconnected', 'connected', 500);
   }
 
   function disconnect() {
     accessToken = null;
     connected = false;
+    $('#ogreddit')
+      .children('.connected')
+      .switchClass('connected', 'disconnected', 500);
   }
 
   function setStatusOnResponse(response) {
@@ -62,25 +68,17 @@ $(function() {
   }
 
   $('body').append(
-    '<div id="fb-root" />' +
-    '<img class="fbPopupNib" />' +
-    '<div class="fbPopup">' +
-      '<div ' +
-        'class="fb-add-to-timeline" ' +
-        'data-show-faces="true" ' +
-        'data-mode="button" />' +
+    '<div id="ogreddit">' +
+      '<div id="fb-root" />' +
+      '<img class="fbPopupNib disconnected" height="25" width="30" />' +
+      '<div class="fbPopup disconnected">' +
+        '<div ' +
+          'class="fb-add-to-timeline" ' +
+          'data-show-faces="true" ' +
+          'data-mode="button" />' +
+      '</div>' +
     '</div>'
   );
-
-  FB.init({
-    appId      : '288106721255039',
-    status     : true,
-    cookie     : true,
-    xfbml      : true,
-    oauth      : true,
-  });
-
-  FB.Event.subscribe('auth.statusChange', setStatusOnResponse);
 
   var popup = $('.fbPopup');
   popup.hide();
@@ -101,4 +99,14 @@ $(function() {
       }
     }
   });
+
+  FB.init({
+    appId      : '288106721255039',
+    status     : true,
+    cookie     : true,
+    xfbml      : true,
+    oauth      : true,
+  });
+
+  FB.Event.subscribe('auth.statusChange', setStatusOnResponse);
 });

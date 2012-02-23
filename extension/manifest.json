@@ -6,7 +6,7 @@
     {
       "matches": [ "http://*.reddit.com/*", "https://*.reddit.com/*" ],
       "css": [ "background.css" ],
-      "js": [ "fb-all.js", "jquery.min.js", "utils.js", "og.js", "background.js" ]
+      "js": [ "lib/fb-all.js", "lib/jquery.min.js", "lib/jquery-ui.min.js", "utils.js", "og.js", "background.js" ]
     }
   ]
 }
