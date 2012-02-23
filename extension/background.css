@@ -1,4 +1,5 @@
 #ogreddit {
+  font: 14px tahoma, sans-serif;
   z-index: 9999;
 }
 
@@ -11,9 +12,13 @@
   position: fixed;
 }
 
+.closed .fbPopup {
+  display: none;
+}
+
 .fbPopup.connected {
-  height: 500px;
-  width: 300px;
+  height: 100px;
+  width: 350px;
   padding: 8px 15px 0 15px;
 }
 
@@ -39,3 +44,19 @@
   cursor: pointer;
 }
 
+.disconnected #settings {
+  display: none;
+}
+
+#settings {
+  margin-top: 10px;
+}
+
+#settings label {
+  margin-left: 10px;
+}
+
+#settings * {
+  line-height: 16px;
+  vertical-align: middle;
+}

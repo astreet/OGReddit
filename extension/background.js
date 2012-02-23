@@ -6,7 +6,7 @@ $(function() {
     connected = true;
     $('#ogreddit')
       .children('.disconnected')
-      .switchClass('disconnected', 'connected', 500);
+      .switchClass('disconnected', 'connected', getAnimationTime());
   }
 
   function disconnect() {
@@ -14,7 +14,7 @@ $(function() {
     connected = false;
     $('#ogreddit')
       .children('.connected')
-      .switchClass('connected', 'disconnected', 500);
+      .switchClass('connected', 'disconnected', getAnimationTime());
   }
 
   function setStatusOnResponse(response) {
@@ -25,6 +25,43 @@ $(function() {
         break;
       default:
         disconnect();
+    }
+  }
+
+  function getAnimationTime() {
+    return $('#ogreddit').hasClass('closed') ? 0 : 500;
+  }
+
+  function setupSettings(settings) {
+    settings.find('input').each(function (index, e) {
+      // Restore settings
+      e = $(e);
+      $.each(settings_attrs_to_save(e.attr('type')), function (i, attr) {
+        var storage_name = 'settings.' + e.attr('id') + '.' + attr;
+        var val = localStorage[storage_name]; 
+        if (val !== undefined) {
+          val = (val === 'true' ? true : val);
+          val = (val === 'false' ? false : val);
+          e.attr(attr, val);
+        }
+      });
+
+      // Save settings
+      e.change(function (event) {
+        $.each(settings_attrs_to_save(e.attr('type')), function (i, attr) {
+          localStorage['settings.' + e.attr('id') + '.' + attr] = 
+            (e.attr() !== undefined ? e.attr() : false);
+        });
+      });
+    });
+  }
+
+  function settings_attrs_to_save(input_type) {
+    switch (input_type) {
+      case 'checkbox':
+        return ['checked'];
+      default:
+        console.error('Unknown input tag, I apparently fail at enumerating input tags');
     }
   }
 
@@ -56,7 +93,7 @@ $(function() {
   }
 
   function upvote(button) {
-    if (!connected) {
+    if (!connected || !localStorage['settings.publish.checked']) {
       return;
     }
 
@@ -68,7 +105,7 @@ $(function() {
   }
 
   $('body').append(
-    '<div id="ogreddit">' +
+    '<div id="ogreddit" class="closed">' +
       '<div id="fb-root" />' +
       '<img class="fbPopupNib disconnected" height="25" width="30" />' +
       '<div class="fbPopup disconnected">' +
@@ -76,13 +113,18 @@ $(function() {
           'class="fb-add-to-timeline" ' +
           'data-show-faces="true" ' +
           'data-mode="button" />' +
+        '<div id="settings">' +
+          '<input type="checkbox" id="publish" checked />' +
+          '<label for="publish">Publish to Facebook</label>' +
+        '</div>' +
       '</div>' +
     '</div>'
   );
 
-  var popup = $('.fbPopup');
-  popup.hide();
-  $('.fbPopupNib').click(function() { popup.toggle(); })
+  setupSettings($('#settings'));
+
+  $('.fbPopupNib')
+    .click(function() { $('#ogreddit').toggleClass('closed'); })
     .attr('src', chrome.extension.getURL('nib-icon.png'));
 
   $('.arrow').click(function() {
