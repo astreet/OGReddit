@@ -75,10 +75,15 @@ copy_into(RedditPost, {
 
     var subreddit_link = entry.find('a.subreddit').first();
     if (subreddit_link.length) {
-      post.subreddit = 
+      post.subreddit =
         RedditSubreddit.fromSubredditLink(subreddit_link).getObjectURL();
     } else {
       post.subreddit = RedditSubreddit.fromCurrentURL().getObjectURL();
+    }
+
+    var upvotes = parseInt(entry.find('.score.unvoted').first().text());
+    if (!!upvotes) {
+      this.upvotes = upvotes;
     }
 
     return post;
@@ -88,14 +93,18 @@ copy_into(RedditPost, {
 copy_into(RedditPost.prototype, {
   toParamArray: function () {
     var params = super_class(RedditPost).toParamArray.call(this);
-    return copy_into(params, {
+    params = copy_into(params, {
       author: this.author,
       content_url: this.content_url,
       image: this.image,
       link: this.link,
       subreddit: this.subreddit,
       title: this.title
-    })
+    });
+    if (this.upvotes) {
+      params.upvotes = this.upvotes;
+    }
+    return params;
   }
 });
 
