@@ -56,7 +56,8 @@ copy_into(RedditPost, {
 
     var content_url = titleElem.attr('href');
     if (content_url && content_url[0] === '/') {
-      content_url = 'http://reddit.com' + link;
+      content_url = 'http://reddit.com' + post.link;
+      post.link = content_url;
     }
     post.content_url = content_url;
 
@@ -83,7 +84,7 @@ copy_into(RedditPost, {
 
     var upvotes = parseInt(entry.find('.score.unvoted').first().text());
     if (!!upvotes) {
-      this.upvotes = upvotes;
+      post.upvotes = upvotes;
     }
 
     return post;
@@ -164,7 +165,7 @@ copy_into(RedditSubreddit, {
   fromSubredditLink: function(button) {
     var subreddit = new RedditSubreddit();
     subreddit.title = '/r/' + button.text();
-    subreddit.link = button.attr('href');
+    subreddit.link = 'http://www.reddit.com' + subreddit.title;
     subreddit.image = 'http://e.thumbs.redditmedia.com/Z8kgqRVNcFP6wiAF.png';
 
     return subreddit;
