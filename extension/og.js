@@ -130,7 +130,7 @@ copy_into(RedditUser.prototype, {
     var params = super_class(RedditUser).toParamArray.call(this);
     return copy_into(params, {
       image: this.image,
-      link: this.link,
+      //link: this.link,
       title: this.title
     })
   }
@@ -189,7 +189,7 @@ copy_into(RedditSubreddit.prototype, {
     var params = super_class(RedditSubreddit).toParamArray.call(this);
     return copy_into(params, {
       image: this.image,
-      link: this.link,
+      //link: this.link,
       title: this.title
     })
   }
