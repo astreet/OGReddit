@@ -1,5 +1,5 @@
 Installing
-==========
+----------
 
 1. Check out the project with git: git://github.com/astreet/OGReddit.git
 2. Go to chrome://extensions and check 'Developer mode'
