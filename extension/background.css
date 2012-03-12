@@ -1,5 +1,5 @@
 #ogreddit {
-  font: 14px tahoma, sans-serif;
+  font: 12px tahoma, sans-serif;
   z-index: 9999;
 }
 
@@ -9,6 +9,7 @@
   border: solid 1px #333;
   background: #fff;
   border: solid 1px #333;
+  padding: 15px;
   position: fixed;
 }
 
@@ -16,20 +17,8 @@
   display: none;
 }
 
-.fbPopup.connected {
-  height: 100px;
-  width: 350px;
-  padding: 8px 15px 0 15px;
-}
-
-.fbPopup.disconnected {
-  height: 75px;
-  width: 230px;
-}
-
-.disconnected .fb-add-to-timeline {
-  padding-top: 38px;
-  padding-left: 58px;
+.connected .fb-add-to-timeline {
+  margin-top: -7px;
 }
 
 .fbPopupNib {
@@ -44,12 +33,20 @@
   cursor: pointer;
 }
 
+.fbPopupNib.success {
+  background: #1f4;
+}
+
+.fbPopupNib.error {
+  background: #e12;
+}
+
 .disconnected #settings {
   display: none;
 }
 
 #settings {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 #settings label {
@@ -57,6 +54,6 @@
 }
 
 #settings * {
-  line-height: 16px;
+  line-height: 14px;
   vertical-align: middle;
 }

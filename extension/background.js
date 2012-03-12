@@ -32,37 +32,18 @@ $(function() {
     return $('#ogreddit').hasClass('closed') ? 0 : 500;
   }
 
-  function setupSettings(settings) {
-    settings.find('input').each(function (index, e) {
-      // Restore settings
-      e = $(e);
-      $.each(settings_attrs_to_save(e.attr('type')), function (i, attr) {
-        var storage_name = 'settings.' + e.attr('id') + '.' + attr;
-        var val = localStorage[storage_name]; 
-        if (val !== undefined) {
-          val = (val === 'true' ? true : val);
-          val = (val === 'false' ? false : val);
-          e.attr(attr, val);
-        }
-      });
-
-      // Save settings
-      e.change(function (event) {
-        $.each(settings_attrs_to_save(e.attr('type')), function (i, attr) {
-          localStorage['settings.' + e.attr('id') + '.' + attr] = 
-            (e.attr() !== undefined ? e.attr() : false);
-        });
-      });
-    });
+  function shouldPublish() {
+    return localStorage['settings.publish'] != 'false';
   }
 
-  function settings_attrs_to_save(input_type) {
-    switch (input_type) {
-      case 'checkbox':
-        return ['checked'];
-      default:
-        console.error('Unknown input tag, I apparently fail at enumerating input tags');
-    }
+  function setupSettings(settings) {
+    // Publish
+    publish = settings.find('input#publish');
+    publish.attr('checked', shouldPublish());
+
+    publish.change(function (event) {
+      localStorage['settings.publish'] = (publish.attr('checked') != undefined);
+    });
   }
 
   var MAX_RETRIES = 5;
@@ -85,6 +66,8 @@ $(function() {
       setTimeout(function() {
         postActionWithRetry(action, object, retry_count + 1);
       }, 1000 * Math.pow(2, retry_count));
+    }).success(function(xhr, text) {
+
     });
   }
 
@@ -93,7 +76,7 @@ $(function() {
   }
 
   function upvote(button) {
-    if (!connected || !localStorage['settings.publish.checked']) {
+    if (!connected || !shouldPublish()) {
       return;
     }
 
