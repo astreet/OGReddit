@@ -7,3 +7,5 @@ Installing
 4. Visit reddit and let me know if you have problems!
 
 Please excuse the shitty code quality, this has gone through a bunch of iterations.  I'll clean it up before launch.
+
+See the proxy code here: https://github.com/astreet/OGProxy
