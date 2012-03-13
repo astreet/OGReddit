@@ -30,3 +30,31 @@ copy_into(RedditPost.prototype, {
     return BASE_URI + '/reddit/post/' + this._id;
   }
 });
+
+//
+// Comment
+//
+
+var RedditComment = extend(function() {
+  super_class(RedditComment).constructor.call(this, 'fbreddit:comment');
+}, OGObject);
+
+copy_into(RedditComment, {
+  fromUpvoteButton: function(button) {
+    var comment = new RedditComment();
+    // Strip t1_
+    comment._comment_id = $(button).parents('.thing').attr('data-fullname').substring(3);
+    // Hacky :p
+    short_url = $('head').children('link[rel="shorturl"]').attr('href');
+    comment._post_id = short_url.substring(short_url.lastIndexOf('/') + 1);
+    return comment;
+  }
+});
+
+copy_into(RedditComment.prototype, {
+  _post_id: null,
+  _comment_id: null,
+  getObjectURL: function() {
+    return BASE_URI + '/reddit/comment/' + this._post_id + '/' + this._comment_id;
+  }
+});

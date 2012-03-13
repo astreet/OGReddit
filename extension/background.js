@@ -79,8 +79,12 @@ $(function() {
     if (!connected || !shouldPublish()) {
       return;
     }
-
-    postAction('upvote', RedditPost.fromUpvoteButton(button));
+  
+    if (button.parents('.comment').size() < 1) {
+      postAction('upvote', RedditPost.fromUpvoteButton(button));
+    } else {
+      postAction('upvote', RedditComment.fromUpvoteButton(button));
+    }
   }
 
   function unupvote(button) {
