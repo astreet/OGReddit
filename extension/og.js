@@ -8,7 +8,7 @@ function OGObject(type) {
 	this.type = type;
 }
 
-copy_into(OGObject, {
+copy_into(OGObject.prototype, {
   getObjectType: function() {
     return this.type;
   }
