@@ -8,12 +8,18 @@ function OGObject(type) {
 	this.type = type;
 }
 
+copy_into(OGObject, {
+  getObjectType: function() {
+    return this.type;
+  }
+});
+
 //
 // Post
 //
 
 var RedditPost = extend(function() {
-  super_class(RedditPost).constructor.call(this, 'fbreddit:post');
+  super_class(RedditPost).constructor.call(this, 'post');
 }, OGObject);
 
 copy_into(RedditPost, {
@@ -36,7 +42,7 @@ copy_into(RedditPost.prototype, {
 //
 
 var RedditComment = extend(function() {
-  super_class(RedditComment).constructor.call(this, 'fbreddit:comment');
+  super_class(RedditComment).constructor.call(this, 'comment');
 }, OGObject);
 
 copy_into(RedditComment, {

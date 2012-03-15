@@ -47,16 +47,17 @@ $(function() {
   }
 
   var MAX_RETRIES = 5;
-  function postActionWithRetry(action, object, retry_count) {
+  function postActionWithRetry(action, obj, retry_count) {
     if (retry_count === MAX_RETRIES) {
       return;
     }
 
-    var url = object.getObjectURL();
+    var url = obj.getObjectURL();
+    var post_data = {access_token: accessToken};
+    post_data[obj.getObjectType()] = url;
     console.log('Try ' + (retry_count + 1) + ': ' + url);
     $.post(
-      'https://graph.facebook.com/me/fbreddit:' + action,
-      {post: url, access_token: accessToken}
+      'https://graph.facebook.com/me/fbreddit:' + action, post_data
     ).error(function(xhr, text) {
       if (text == 'parsererror') {
         return;
@@ -64,22 +65,22 @@ $(function() {
 
       console.error('Fail: ' + text);
       setTimeout(function() {
-        postActionWithRetry(action, object, retry_count + 1);
+        postActionWithRetry(action, obj, retry_count + 1);
       }, 1000 * Math.pow(2, retry_count));
     }).success(function(xhr, text) {
 
     });
   }
 
-  function postAction(action, object) {
-    postActionWithRetry(action, object, 0);
+  function postAction(action, obj) {
+    postActionWithRetry(action, obj, 0);
   }
 
   function upvote(button) {
     if (!connected || !shouldPublish()) {
       return;
     }
-  
+
     if (button.parents('.comment').size() < 1) {
       postAction('upvote', RedditPost.fromUpvoteButton(button));
     } else {
