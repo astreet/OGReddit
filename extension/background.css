@@ -1,5 +1,6 @@
 #ogreddit {
-  font: 12px tahoma, sans-serif;
+  font-size: 12px;
+  font-family: Arial,Helvetica,Verdana,sans-serif;
   z-index: 9999;
 }
 
