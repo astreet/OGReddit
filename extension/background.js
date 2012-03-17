@@ -6,7 +6,7 @@ $(function() {
     connected = true;
     $('#ogreddit')
       .children('.disconnected')
-      .switchClass('disconnected', 'connected', getAnimationTime());
+      .switchClass('disconnected', 'connected');
   }
 
   function disconnect() {
@@ -14,7 +14,7 @@ $(function() {
     connected = false;
     $('#ogreddit')
       .children('.connected')
-      .switchClass('connected', 'disconnected', getAnimationTime());
+      .switchClass('connected', 'disconnected');
   }
 
   function setStatusOnResponse(response) {
@@ -26,10 +26,6 @@ $(function() {
       default:
         disconnect();
     }
-  }
-
-  function getAnimationTime() {
-    return $('#ogreddit').hasClass('closed') ? 0 : 500;
   }
 
   function shouldPublish() {
@@ -95,25 +91,16 @@ $(function() {
   $('body').append(
     '<div id="ogreddit" class="closed">' +
       '<div id="fb-root" />' +
-      '<img class="fbPopupNib disconnected" height="25" width="30" />' +
-      '<div class="fbPopup disconnected">' +
-        '<div ' +
-          'class="fb-add-to-timeline" ' +
-          'data-show-faces="true" ' +
-          'data-mode="button" />' +
-        '<div id="settings">' +
-          '<input type="checkbox" id="publish" checked />' +
-          '<label for="publish">Publish to Facebook</label>' +
-        '</div>' +
-      '</div>' +
     '</div>'
   );
 
-  setupSettings($('#settings'));
-
-  $('.fbPopupNib')
-    .click(function() { $('#ogreddit').toggleClass('closed'); })
-    .attr('src', chrome.extension.getURL('nib-icon.png'));
+  $('#ogreddit').load(chrome.extension.getURL('settings.html'), function() {
+    var settings = $('#ogreddit .settings');
+    setupSettings(settings);
+    $('#ogreddit .settingsNib').click(function() {
+      settings.toggleClass('closed');
+    });
+  });
 
   $('.arrow').click(function() {
     var button = $(this);
