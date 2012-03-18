@@ -5,6 +5,7 @@
   width: 100%;
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/texture.png');
   background-repeat: repeat;
+  background-color: RGBA(0, 0, 0, .1);
   font-family: Arial,Helvetica,Verdana,sans-serif;
   padding: 15px;
   border-top: 3px #444 solid;
@@ -31,22 +32,53 @@
 }
 
 #ogreddit .settings h1 {
-  color: #eee;
+  color: #ccc;
   font-size: 22px;
   line-height: 24px;
   margin-bottom: 10px;
+  margin-top: 0;
 }
 
 #ogreddit .settings h2 {
-  color: #ddd;
+  color: #bbb;
   font-size: 18px;
   line-height: 20px;
   margin-bottom: 5px;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+#ogreddit .settings .setting {
+  color: #1b1b1b;
+  font-size: 14px;
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
+
+#ogreddit .settings .setting label {
+  margin-left: 5px;
+}
+
+#ogreddit .subsettings {
+  margin-left: 15px;
+}
+
+#ogreddit .subredditSettingsLink {
+  color: #11c;
+  margin-left: 5px;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 #ogreddit .fb-add-to-timeline {  
   float: right;
   position: relative;
-  top: -30px;
-  right: 15px;
+  top: 0;
+  right: -64px;
+  background-color: RGBA(255, 255, 255, .2);
+  padding: 7px 0px 15px 15px;
+  margin-right: -5px;
+  -webkit-border-radius: 8px;
+  max-height: 180px;
+  overflow: hidden;
 }
