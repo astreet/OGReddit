@@ -1,0 +1,40 @@
+<html>
+	<script type="text/javascript" src="lib/jquery.min.js"></script>
+	<script type="text/javascript">
+		console.log('asd');
+		console.log(Object.keys(localStorage));
+		$.each(Object.keys(localStorage), function(_, key) {
+			console.log(key);
+			if (!key.startsWith('settings.subreddit.')) {
+				return;
+			}
+
+			var subreddit = key.substring(18);
+			var value = localStorage[key];
+			var setting = $(
+				'<div class="subredditSetting">' +
+					'<div>' + subreddit + ':</div>' +
+					'<select>' +
+						'<option value="disabled">Disabled</option>' +
+						'<option value="enabled">Enabled</option>' +
+					'</select>' +
+				'</div>'
+			);
+
+			setting.find('option[value="' + value + '"]').attr('selected', 1);
+
+			$('body').append(setting);
+		});
+
+		function save() {
+			$('.subredditSettings .subredditSetting').each(function(e) {
+				var subreddit = e.text().toLowerCase();
+				var value = e.find('select option:selected').attr('value');
+				localStorage['settings.subreddit.' + subreddit] = value;
+			});
+		}
+	</script>
+	<body class="subredditSettings">
+		<button onclick="save()">Save</button>
+	</body>
+</html>

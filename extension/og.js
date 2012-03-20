@@ -9,8 +9,16 @@ function OGObject(type) {
 }
 
 copy_into(OGObject.prototype, {
+  _subreddit: null,
   getObjectType: function() {
     return this.type;
+  },
+  getSubreddit: function() {
+    if (!this._subreddit) {
+      console.error('Must set _subreddit!');
+    }
+
+    return this._subreddit;
   }
 });
 
@@ -25,7 +33,9 @@ var RedditPost = extend(function() {
 copy_into(RedditPost, {
   fromUpvoteButton: function(button) {
     var post = new RedditPost();
-    post._id = $(button).parents('.thing').attr('data-fullname');
+    var thing = $(button).parents('.thing');
+    post._id = thing.attr('data-fullname');
+    post._subreddit = thing.find('.subreddit').first().text() || null;
     return post;
   }
 });
@@ -53,6 +63,7 @@ copy_into(RedditComment, {
     // Hacky :p
     short_url = $('head').children('link[rel="shorturl"]').attr('href');
     comment._post_id = short_url.substring(short_url.lastIndexOf('/') + 1);
+    comment._subreddit = $('body .redditname').first().text() || null;
     return comment;
   }
 });

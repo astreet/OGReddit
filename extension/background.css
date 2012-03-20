@@ -5,10 +5,9 @@
   width: 100%;
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/texture.png');
   background-repeat: repeat;
-  background-color: RGBA(0, 0, 0, .1);
   font-family: Arial,Helvetica,Verdana,sans-serif;
   padding: 15px;
-  border-top: 3px #444 solid;
+  border-top: 3px #333 solid;
   -webkit-transition: bottom .3s;
 }
 
@@ -25,6 +24,7 @@
   height: 29px;
   width: 98px;
   top: -45px;
+  cursor: pointer;
 }
 
 #ogreddit .settings.closed {
@@ -59,7 +59,7 @@
   margin-left: 5px;
 }
 
-#ogreddit .subsettings {
+#ogreddit .publishSubsettings {
   margin-left: 15px;
 }
 
@@ -68,6 +68,7 @@
   margin-left: 5px;
   font-size: 13px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 #ogreddit .fb-add-to-timeline {  
@@ -75,10 +76,11 @@
   position: relative;
   top: 0;
   right: -64px;
-  background-color: RGBA(255, 255, 255, .2);
+  background-color: RGBA(0, 0, 0, .15);
   padding: 7px 0px 15px 15px;
   margin-right: -5px;
   -webkit-border-radius: 8px;
-  max-height: 180px;
+  max-height: 150px;
   overflow: hidden;
 }
+
