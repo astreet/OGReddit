@@ -22,3 +22,7 @@ function copy_into(obj, properties) {
 function is_image(uri) {
   return uri.match('(gif|png|jpg|bmp)$'); 
 }
+
+String.prototype.startsWith = function(str) {
+  return this.substring(0, Math.min(str.length, this.length)) === str;
+}

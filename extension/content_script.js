@@ -18,7 +18,6 @@ $(function() {
   }
 
   function setStatusOnResponse(response) {
-    console.log('asdasdasdasdasdasdasdas');
     switch (response.status) {
       case 'connected':
         accessToken = response.authResponse.accessToken;
@@ -32,8 +31,6 @@ $(function() {
   var MAX_RETRIES = 5;
   function postActionWithRetry(action, obj, retry_count) {
     if (!connected || !shouldPublish(action, obj.getSubreddit())) {
-      console.log(obj.getSubreddit());
-      console.log(connected);
       console.error('Not publishing');
       return;
     }
@@ -108,23 +105,24 @@ $(function() {
     ];
 
     $.each(DEFAULT_SUBREDDITS, function(_, subreddit) {
-      localStorage['settings.subreddit.' + subreddit.toLowerCase()] = 'enabled';
+      settings_set('settings.subreddit.' + subreddit.toLowerCase(), 'enabled');
     })
 
-    localStorage['settings.hasRunBefore'] = true;
+    settings_set('settings.hasRunBefore', true);
   }
 
   $('body').append(
     '<div id="ogreddit" class="closed">' +
       '<div id="fb-root" />' +
+      '<div class="content" />' +
     '</div>'
   );
 
-  if (!localStorage['settings.hasRunBefore']) {
-    firstRun();
-  }
+  settings_get('settings.hasRunBefore', function(value) {
+    !value && firstRun();
+  });
 
-  $('#ogreddit').load(chrome.extension.getURL('settings.html'), function() {
+  $('#ogreddit .content').load(chrome.extension.getURL('settings.html'), function() {
     var settings = $('#ogreddit .settings');
     setupSettings(settings);
     $('#ogreddit .settingsNib').click(function() {
@@ -147,7 +145,6 @@ $(function() {
     }
   });
 
-  FB.Event.subscribe('auth.statusChange', setStatusOnResponse);
   FB.init({
     appId      : '288106721255039',
     status     : true,
@@ -155,6 +152,6 @@ $(function() {
     xfbml      : true,
     oauth      : true,
   });
-  FB.getLoginStatus(function() {alert('asda');});
-  console.log('done');
+
+  FB.Event.subscribe('auth.statusChange', setStatusOnResponse);
 });
