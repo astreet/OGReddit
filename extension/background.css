@@ -15,6 +15,7 @@
 
 body.hasOGPublishPrompt #ogreddit .publishPrompt {
   top: 0px;
+  -webkit-box-shadow: 0 0 5px #333;
 }
 
 #ogreddit .publishPrompt .promptText {
@@ -89,6 +90,7 @@ body.hasOGPublishPrompt #ogreddit .publishPrompt {
   padding: 15px;
   border-top: 3px #333 solid;
   -webkit-transition: bottom .3s;
+  -webkit-box-shadow: 0 0 5px #333;
 }
 
 #ogreddit .settingsNib {
@@ -109,6 +111,7 @@ body.hasOGPublishPrompt #ogreddit .publishPrompt {
 
 #ogreddit .settings.closed {
   bottom: 0px;
+  -webkit-box-shadow: 0;
 }
 
 #ogreddit .settings h1 {
