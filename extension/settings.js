@@ -31,16 +31,6 @@ function settings_get_all(callback) {
   });
 }
 
-function guardedPublish(action_name, subreddit_name, publish_function) {
-  settings_get_all(function(settings) {
-    if (settings['settings.publish.killswitch'] != 'false'
-        && settings['settings.publish.' + action_name] != 'false'
-        && settings['settings.subreddit.' + subreddit_name.toLowerCase()] == 'enabled') {
-      publish_function();
-    }
-  })
-}
-
 function setupSettings(settings) {
   $.each(SELECTOR_TO_SETTINGS_MAP, function(selector, setting_name) {
     setupSettingsCheckbox(settings.find('input' + selector), setting_name);

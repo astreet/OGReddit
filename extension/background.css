@@ -1,11 +1,91 @@
+#ogreddit {
+  font-family: Arial,Helvetica,Verdana,sans-serif;
+}
+
+#ogreddit .publishPrompt {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/texture.png');
+  background-repeat: repeat;
+  position: fixed;
+  width: 100%;
+  height: 66px;
+  top: -66px;
+  z-index: 1000;
+  -webkit-transition: top .3s;
+}
+
+body.hasOGPublishPrompt #ogreddit .publishPrompt {
+  top: 0px;
+}
+
+#ogreddit .publishPrompt .promptText {
+  font-family: verdana, sans-serif;
+  font-size: 18px;
+  color: #eee;
+  padding: 13px 0 13px 20px;
+}
+
+#ogreddit .publishPrompt .publishStrip {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/fbwarn.png');
+  background-repeat: repeat-x;
+  background-color: #eef;
+  clear: both;
+  height: 15px;
+  width: 100%;
+}
+
+#ogreddit .publishPrompt .promptText {
+  float: left;
+}
+
+#ogreddit .publishPrompt .buttonGroup {
+  float: right;
+  margin: 0 5px;
+}
+
+#ogreddit .publishPrompt .buttonGroup button {
+  color: #444;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+  margin: 10px 5px;
+  padding: 6px 10px;
+  -webkit-border-radius: 10px;
+}
+
+#ogreddit .publishPrompt .buttonGroup .alwaysButton {
+  background: -webkit-linear-gradient(top, #EFE 0%, #DED 100%);
+  border: 1px solid #4B4;
+}
+
+#ogreddit .publishPrompt .buttonGroup .alwaysButton:active {
+  background: -webkit-linear-gradient(top, #DED 0%, #EFE 100%);
+}
+
+#ogreddit .publishPrompt .buttonGroup .yesButton {
+  background: -webkit-linear-gradient(top, #E6E0D4 0%, #DDD 100%);
+  border: 1px solid #888;
+}
+
+#ogreddit .publishPrompt .buttonGroup .yesButton:active {
+  background: -webkit-linear-gradient(top, #DDD 0%, #E6E0D4 100%);
+}
+
+#ogreddit .publishPrompt .buttonGroup .neverButton {
+  background: -webkit-linear-gradient(top, #F7EAEA 0%, #EDD 100%);
+  border: 1px solid #966;
+}
+
+#ogreddit .publishPrompt .buttonGroup .neverButton:active {
+  background: -webkit-linear-gradient(top, #EDD 0%, #F7EAEA 100%);
+}
+
 #ogreddit .settings {
   position: fixed;
-  bottom: 0px;
+  bottom: -214px;
   height: 180px;
   width: 100%;
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/texture.png');
   background-repeat: repeat;
-  font-family: Arial,Helvetica,Verdana,sans-serif;
   padding: 15px;
   border-top: 3px #333 solid;
   -webkit-transition: bottom .3s;
@@ -28,7 +108,7 @@
 }
 
 #ogreddit .settings.closed {
-  bottom: -214px;
+  bottom: 0px;
 }
 
 #ogreddit .settings h1 {
