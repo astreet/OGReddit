@@ -126,6 +126,35 @@ $(function() {
     return $('#header .user a').text();
   }
 
+  /*var MAX_COMMENT_RETRIES = 6;
+  function findCommentFromSaveButton(save_button, callback, retry_count) {
+    if (!retry_count) {
+      retry_count = 0;
+    }
+
+    if (retry_count >= MAX_COMMENT_RETRIES) {
+      console.log("Hmm... couldn't find your comment, maybe it failed");
+      return;
+    }
+
+    console.log('Trying to find comment, attempt ' + (retry_count + 1) + '...');
+
+    var reply_container = $(save_button).parents('.child').first();
+      if (reply_container.length == 0) {
+        reply_container = $(save_button).parents('form').first().next('div');
+        if (reply_container.length == 0) {
+          
+          setTimeout(function() {
+            findCommentFromSaveButton(save_button, callback, retry_count + 1)
+          }, 1000 * Math.pow(2, retry_count))
+        }
+      }
+
+      // Yay, we found it!
+      var comment = RedditComment.fromUpvoteButton($(reply_container).find('.arrow').first());
+      callback(comment);
+  }*/
+
   function firstRun() {
     console.log('first hasRunBefore');
     var DEFAULT_SUBREDDITS = [
@@ -183,8 +212,9 @@ $(function() {
     !value && firstRun();
   });
 
-  settings_get('state.expectNewPost', function(value) {
+  /*settings_get('state.expectNewPost', function(value) {
     if (value == 'true') {
+      console.log("We're expecting to find a new post on this page...");
       settings_set('state.expectNewPost', false);
       var post = RedditPost.fromUpvoteButton($('.arrow').first());
       if (post.getAuthor() == getLoggedInUser()) {
@@ -192,7 +222,7 @@ $(function() {
         postAction('submit', post);
       }
     }
-  });
+  });*/
 
   $('#ogreddit #settings_content').load(chrome.extension.getURL('settings.html'), function() {
     var settings = $('#ogreddit .settings');
@@ -219,9 +249,16 @@ $(function() {
     }
   });
 
-  $('body.submit-page').find('button[name="submit"]').click(function () {
+  /*$('body.submit-page').find('button[name="submit"]').click(function () {
     settings_set('state.expectNewPost', 'true');
   });
+
+  $('button.save').click(function() {
+    console.log('comment');
+    setTimeout(function() {
+      findCommentFromSaveButton(this, function(comment) { postAction('comment_action', comment); });
+    }.bind(this), 500);
+  });*/
 
   FB.init({
     appId      : '288106721255039',
