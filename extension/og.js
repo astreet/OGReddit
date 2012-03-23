@@ -36,6 +36,7 @@ copy_into(RedditPost, {
     var thing = $(button).parents('.thing');
     post._id = thing.attr('data-fullname');
     post._subreddit = thing.find('.subreddit').first().text() || null;
+    post._author = thing.find('.author').first().text() || null;
     return post;
   }
 });
@@ -44,6 +45,9 @@ copy_into(RedditPost.prototype, {
   _id: null,
   getObjectURL: function() {
     return BASE_URI + '/reddit/post/' + this._id;
+  },
+  getAuthor: function() {
+    return this._author;
   }
 });
 

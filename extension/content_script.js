@@ -122,6 +122,10 @@ $(function() {
     console.log('unupvote');
   }
 
+  function getLoggedInUser() {
+    return $('#header .user a').text();
+  }
+
   function firstRun() {
     console.log('first hasRunBefore');
     var DEFAULT_SUBREDDITS = [
@@ -179,6 +183,17 @@ $(function() {
     !value && firstRun();
   });
 
+  settings_get('state.expectNewPost', function(value) {
+    if (value == 'true') {
+      settings_set('state.expectNewPost', false);
+      var post = RedditPost.fromUpvoteButton($('.arrow').first());
+      if (post.getAuthor() == getLoggedInUser()) {
+        // Ok, at this point we're /pretty/ sure you just posted something...
+        postAction('submit', post);
+      }
+    }
+  });
+
   $('#ogreddit #settings_content').load(chrome.extension.getURL('settings.html'), function() {
     var settings = $('#ogreddit .settings');
     setupSettings(settings);
@@ -202,6 +217,10 @@ $(function() {
         // undownvote();
       }
     }
+  });
+
+  $('body.submit-page').find('button[name="submit"]').click(function () {
+    settings_set('state.expectNewPost', 'true');
   });
 
   FB.init({
