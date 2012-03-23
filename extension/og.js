@@ -36,7 +36,7 @@ copy_into(RedditPost, {
     var thing = $(button).parents('.thing');
     post._id = thing.attr('data-fullname');
     post._subreddit = thing.find('.subreddit').first().text() || 
-      thing.find('a.title').attr('href').match(/^\/r\/([^\/]+)/)[1] || null;
+      window.location.pathname.match(/^\/r\/([^\/]+)/)[1] || null;
     post._author = thing.find('.author').first().text() || null;
     return post;
   }
