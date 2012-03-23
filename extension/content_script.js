@@ -51,7 +51,7 @@ $(function() {
   function showPublishPrompt(subreddit_name, publish_function) {
     var prompt = $('#ogreddit .publishPrompt');
     prompt.find('.promptText').text("Publish actions for /r/" + subreddit_name + " to your timeline?");
-    prompt.find('button').off('click').click(function() { hidePublishPrompt(); });
+    prompt.find('.buttonGroup').children().off('click').click(function() { hidePublishPrompt(); });
 
     prompt.find('.yesButton').click(function() {
       publish_function();
@@ -171,16 +171,6 @@ $(function() {
   $('body').append(
     '<div id="ogreddit" class="closed">' +
       '<div id="fb-root" />' +
-      '<div class="publishPrompt">' +
-        '<div class="publishStrip" />' +
-        '<div class="promptText" />' +
-        '<div class="buttonGroup">' +
-          '<button class="alwaysButton">Always</button>' +
-          '<button class="yesButton">This once</button>' +
-          '<button class="neverButton">Never</button>' +
-          '<span class="noButton" />' +
-        '</div>' +
-      '</div>' +
       '<div id="settings_content" />' +
     '</div>'
   );
