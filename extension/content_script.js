@@ -34,8 +34,7 @@ $(function() {
           && settings['settings.publish.' + action_name] != 'false'
           && settings['settings.subreddit.' + subreddit_name.toLowerCase()] != 'disabled') {
         if (settings['settings.subreddit.' + subreddit_name.toLowerCase()] == 'enabled') {
-          // change back to publish
-          showPublishPrompt(subreddit_name, publish_function);
+          publish_function();
         } else {
           showPublishPrompt(subreddit_name, publish_function);
         }
