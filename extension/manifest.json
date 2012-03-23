@@ -10,5 +10,10 @@
       "js": [ "lib/fb-all.js", "lib/jquery.min.js", "lib/jquery-ui.min.js", "utils.js", "og.js", "settings.js", "content_script.js" ]
     }
   ],
+  "icons": {
+    "16": "16.jpg",
+    "48": "48.jpg",
+    "128": "128.jpg"
+  },
   "permissions": ["tabs"]
 }
