@@ -16,7 +16,7 @@
 			var value = localStorage[key];
 			var setting = $(
 				'<tr class="subredditSetting">' +
-					'<td class="settingName">' + subreddit + ':</td>' +
+					'<td class="settingName" id=' + subreddit + '>' + subreddit + ':</td>' +
 					'<td><select>' +
 						'<option value="disabled">Disabled</option>' +
 						'<option value="enabled">Enabled</option>' +
@@ -30,9 +30,9 @@
 		});
 
 		function save() {
-			$('.subredditSettings .subredditSetting .settingName').each(function(_, e) {
+			$('.subredditSettings .subredditSetting').each(function(_, e) {
 				e = $(e);
-				var subreddit = e.text().toLowerCase();
+				var subreddit = e.find('.settingName').attr('id').toLowerCase();
 				var value = e.find('select option:selected').attr('value');
 				console.log('Saving ' + subreddit + " = " + value);
 				localStorage['settings.subreddit.' + subreddit] = value;
