@@ -1,6 +1,6 @@
 {
   "name": "OG Reddit",
-  "version": "1.0",
+  "version": "1.1.1",
   "description": "Publishes your reddit activity to your Facebook Timeline",
   "background_page": "background.html",
   "content_scripts": [

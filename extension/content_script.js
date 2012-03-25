@@ -229,6 +229,16 @@ $(function() {
     $('#ogreddit .settingsNib').click(function() {
       settings.toggleClass('closed');
     });
+
+    FB.init({
+      appId      : '288106721255039',
+      status     : true,
+      cookie     : true,
+      xfbml      : true,
+      oauth      : true,
+    });
+
+    FB.Event.subscribe('auth.statusChange', setStatusOnResponse);
   });
 
   $('#ogreddit').append(prompt);
@@ -258,14 +268,4 @@ $(function() {
       findCommentFromSaveButton(this, function(comment) { postAction('comment_action', comment); });
     }.bind(this), 500);
   });*/
-
-  FB.init({
-    appId      : '288106721255039',
-    status     : true,
-    cookie     : true,
-    xfbml      : true,
-    oauth      : true,
-  });
-
-  FB.Event.subscribe('auth.statusChange', setStatusOnResponse);
 });
