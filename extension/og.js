@@ -10,8 +10,14 @@ function OGObject(type) {
 
 copy_into(OGObject.prototype, {
   _subreddit: null,
+  _isNSFW: false,
   getObjectType: function() {
     return this.type;
+  },
+  getShortType: function() {
+    var type = this.getObjectType();
+    var colon_index = type.indexOf(':');
+    return type.substring(colon_index + 1, type.length);
   },
   getSubreddit: function() {
     if (!this._subreddit) {
@@ -19,6 +25,9 @@ copy_into(OGObject.prototype, {
     }
 
     return this._subreddit;
+  },
+  isNSFW: function() {
+    return this._isNSFW;
   }
 });
 
@@ -38,6 +47,7 @@ copy_into(RedditPost, {
     post._subreddit = thing.find('.subreddit').first().text() || 
       window.location.pathname.match(/^\/r\/([^\/]+)/)[1] || null;
     post._author = thing.find('.author').first().text() || null;
+    post._isNSFW = (thing.find('.nsfw-stamp').length > 0);
     return post;
   }
 });

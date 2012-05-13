@@ -28,11 +28,17 @@ $(function() {
     }
   }
 
-  function guardedPublish(action_name, subreddit_name, publish_function) {
+  function guardedPublish(action, obj, publish_function) {
+    var noun = obj.getShortType();
+    var subreddit_name = obj.getSubreddit();
+
     settings_get_all(function(settings) {
-      if (settings['settings.publish.killswitch'] != 'false'
-          && settings['settings.publish.' + action_name] != 'false'
-          && settings['settings.subreddit.' + subreddit_name.toLowerCase()] != 'disabled') {
+      var action_setting = 'settings.publish.' + action + '_on_' + noun + 's';
+      if (settings['settings.publish.killswitch'] != 'false' &&
+          !(settings['settings.publish.never_publish_nsfw'] != 'false' && obj.isNSFW()) &&
+          settings[action_setting] != 'false' &&
+          settings['settings.subreddit.' + subreddit_name.toLowerCase()] != 'disabled') {
+
         if (settings['settings.subreddit.' + subreddit_name.toLowerCase()] == 'enabled') {
           publish_function();
         } else {
@@ -41,7 +47,8 @@ $(function() {
       } else {
         console.log('Not publishing because:');
         settings['settings.publish.killswitch'] == 'false' && console.log(' - Killswitch engaged');
-        settings['settings.publish.' + action_name] == 'false' && console.log(' - Publishing turned off for ' + action_name);
+        (settings['settings.publish.never_publish_nsfw'] != 'false' && obj.isNSFW()) && console.log(' - Post was NSFW and NSFW publishing is disabled');
+        settings[action_setting] == 'false' && console.log(' - Publishing turned off for ' + action + 's on ' + noun + 's');
         settings['settings.subreddit.' + subreddit_name.toLowerCase()] == 'disabled' && console.log(' - Publishing turned off for /r/' + subreddit_name);
       }
     });
@@ -104,7 +111,7 @@ $(function() {
   }
 
   function postAction(action, obj) {
-    guardedPublish(action, obj.getSubreddit(), function() {
+    guardedPublish(action, obj, function() {
       postActionWithRetry(action, obj, 0);
     });
   }
@@ -155,35 +162,6 @@ $(function() {
   }*/
 
   function firstRun() {
-    console.log('first hasRunBefore');
-    var DEFAULT_SUBREDDITS = [
-      "pics",
-      "gaming",
-      "worldnews",
-      "videos",
-      "todayilearned",
-      "iama",
-      "funny",
-      "atheism",
-      "politics",
-      "science",
-      "askreddit",
-      "technology",
-      "wtf",
-      "blog",
-      "announcements",
-      "bestof",
-      "adviceanimals",
-      "music",
-      "aww",
-      "askscience",
-      "movies",
-    ];
-
-    $.each(DEFAULT_SUBREDDITS, function(_, subreddit) {
-      settings_set('settings.subreddit.' + subreddit.toLowerCase(), 'enabled');
-    })
-
     settings_set('settings.hasRunBefore', true);
   }
 

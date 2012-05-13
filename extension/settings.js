@@ -3,7 +3,9 @@
  */
 var SELECTOR_TO_SETTINGS_MAP = {
   '#publish_killswitch': 'settings.publish.killswitch',
-  '#publish_upvote': 'settings.publish.upvote',
+  '#never_publish_nsfw': 'settings.publish.never_publish_nsfw',
+  '#publish_upvote_on_posts': 'settings.publish.upvote_on_posts',
+  '#publish_upvote_on_comments': 'settings.publish.upvote_on_comments',
   '#publish_subscribe': 'settings.publish.subscribe',
   '#publish_comment': 'settings.publish.comment',
   '#publish_post': 'settings.publish.post'
