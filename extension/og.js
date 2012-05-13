@@ -79,6 +79,7 @@ copy_into(RedditComment, {
     short_url = $('head').children('link[rel="shorturl"]').attr('href');
     comment._post_id = short_url.substring(short_url.lastIndexOf('/') + 1);
     comment._subreddit = $('body .redditname').first().text() || null;
+    comment._isNSFW = ($('body .nsfw-stamp').length > 0);
     return comment;
   }
 });
