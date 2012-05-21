@@ -1,7 +1,7 @@
 {
   "name": "OG Reddit",
   "version": "1.2",
-  "description": "Publishes your reddit activity to your Facebook Timeline",
+  "description": "Publish and aggregate your reddit activity on your Facebook Timeline via an Open Graph app.",
   "background_page": "background.html",
   "content_scripts": [
     {
