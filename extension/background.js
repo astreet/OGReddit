@@ -1,5 +1,4 @@
 chrome.extension.onRequest.addListener(function(request, sender, respond) {
-	console.log(localStorage);
 	switch (request.fun) {
 		case 'show_subreddit_settings':
 		    chrome.windows.create({

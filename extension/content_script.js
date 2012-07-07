@@ -163,6 +163,7 @@ $(function() {
 
   function firstRun() {
     settings_set('settings.hasRunBefore', true);
+    $('#ogreddit .settings').addClass('open');
   }
 
   var prompt = $(
@@ -179,7 +180,7 @@ $(function() {
   );
 
   $('body').append(
-    '<div id="ogreddit" class="closed">' +
+    '<div id="ogreddit">' +
       '<div id="fb-root" />' +
       '<div id="settings_content" />' +
     '</div>'
@@ -205,7 +206,7 @@ $(function() {
     var settings = $('#ogreddit .settings');
     setupSettings(settings);
     $('#ogreddit .settingsNib').click(function() {
-      settings.toggleClass('closed');
+      settings.toggleClass('open');
     });
 
     FB.init({

@@ -116,7 +116,7 @@ body.hasOGPublishPrompt #ogreddit .publishPrompt {
   cursor: pointer;
 }
 
-#ogreddit .settings.closed {
+#ogreddit .settings.open {
   bottom: 0px;
   -webkit-box-shadow: 0;
 }
@@ -161,7 +161,8 @@ body.hasOGPublishPrompt #ogreddit .publishPrompt {
   cursor: pointer;
 }
 
-#ogreddit .fb-add-to-timeline {  
+#ogreddit .fb-add-to-timeline,
+#ogreddit .fb-login-button {  
   float: right;
   position: relative;
   top: 0;
